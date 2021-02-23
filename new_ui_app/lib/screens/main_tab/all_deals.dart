@@ -13,7 +13,7 @@ class _AllDealsPage extends State {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(

@@ -8,8 +8,8 @@ import 'package:new_ui_app/screens/drawer/location/location_page.dart';
 import 'package:new_ui_app/screens/drawer/school_supplies/school_supplies_page.dart';
 import 'package:new_ui_app/screens/drawer/sing_in_up/sing_in_page.dart';
 import 'package:new_ui_app/screens/drawer/uniform/uniform_page.dart';
-import 'package:new_ui_app/screens/tab/all_deals.dart';
-import 'package:new_ui_app/screens/tab/all_goods.dart';
+import 'package:new_ui_app/screens/main_tab/all_deals.dart';
+import 'package:new_ui_app/screens/main_tab/all_goods.dart';
 
 void main() =>
     runApp(MaterialApp(debugShowCheckedModeBanner: false, home: HomePage()));
@@ -65,7 +65,7 @@ class _HomePage extends State {
             ),
           ),
           drawer: Drawer(
-            child: Container(
+            child: Container(color: Colors.blueGrey,
               child: ListView(
                 children: [
                   Padding(
@@ -78,7 +78,7 @@ class _HomePage extends State {
                           padding: const EdgeInsets.all(12.0),
                           child: Text(
                             "Hello",
-                            style: TextStyle(
+                            style: TextStyle(color: Colors.white,
                                 fontSize: 40, fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -97,7 +97,7 @@ class _HomePage extends State {
                                 color: Colors.white,
                               ),
                               title: Text(
-                                'Sing in',
+                                'Account',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
@@ -156,7 +156,7 @@ class _HomePage extends State {
                           padding: const EdgeInsets.all(12.0),
                           child: Text(
                             "Popular Categories",
-                            style: TextStyle(
+                            style: TextStyle(color: Colors.white,
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ),
