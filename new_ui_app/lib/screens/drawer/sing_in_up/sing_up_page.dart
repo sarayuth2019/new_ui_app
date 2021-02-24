@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart'as http;
+import 'package:new_ui_app/screens/drawer/sing_in_up/sing_in_page.dart';
 
 class SingUp extends StatefulWidget {
   @override
@@ -11,10 +15,12 @@ class SingUp extends StatefulWidget {
 }
 
 class _SingUp extends State {
+  final urlSingUp = "https://testheroku11111.herokuapp.com/Register/register";
   final _formKey = GlobalKey<FormState>();
   final _snackBarKey = GlobalKey<ScaffoldState>();
   final singUpSnackBar =
       SnackBar(content: Text("Please wait a moment , Sing Up..."));
+  final singUpFail = SnackBar(content: Text("Email นี้มีผู้ใช้แล้ว"));
   bool _checkText = false;
   String email;
   String password;
@@ -171,10 +177,35 @@ class _SingUp extends State {
       print(password);
       print(name);
       print(number);
+      saveToDB();
+
     } else {
       setState(() {
         _checkText = true;
       });
     }
+  }
+
+  void saveToDB (){
+    Map params = Map();
+    params['email'] = email;
+    params['password'] = password;
+    params['name'] = name;
+    params['surname'] = surname;
+    params['phone_number'] = number;
+    http.post(urlSingUp,body: params).then((res){
+      print(res.body);
+      Map resBody = jsonDecode(res.body) as Map;
+      var _resStatus = resBody['status'];
+      print("Sing Up Status : ${_resStatus}");
+
+      setState(() {
+        if(_resStatus == 1){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>SingIn()));
+        }else if(_resStatus == 0){
+          _snackBarKey.currentState.showSnackBar(singUpFail);
+        }
+      });
+    });
   }
 }

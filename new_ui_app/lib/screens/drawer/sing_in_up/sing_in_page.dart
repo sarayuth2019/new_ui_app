@@ -1,9 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:new_ui_app/screens/drawer/sing_in_up/account/account_page.dart';
+import 'package:new_ui_app/main.dart';
 import 'package:new_ui_app/screens/drawer/sing_in_up/sing_up_page.dart';
-
-
+import 'package:http/http.dart' as http;
 
 class SingIn extends StatefulWidget {
   @override
@@ -14,13 +14,21 @@ class SingIn extends StatefulWidget {
 }
 
 class _SingIn extends State {
-  TextEditingController user = TextEditingController();
+  final snackBarKey = GlobalKey<ScaffoldState>();
+  final snackBarOnSingIn =
+      SnackBar(content: Text("Please wait a moment , Sing In..."));
+  final snackBarSingInFail =
+      SnackBar(content: Text("กรุณาตรวจสอบ Email หรือ Password"));
+  final urlSingIn = "https://testheroku11111.herokuapp.com/User/Login";
+  int accountID;
+  TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      key: snackBarKey,
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         backgroundColor: Colors.orange[600],
@@ -58,9 +66,9 @@ class _SingIn extends State {
                 child: ListTile(
               leading: Icon(Icons.account_circle_outlined),
               title: TextField(
-                controller: user,
+                controller: email,
                 decoration: InputDecoration(
-                    hintText: "Username", border: InputBorder.none),
+                    hintText: "Email", border: InputBorder.none),
               ),
             )),
             Card(
@@ -80,12 +88,7 @@ class _SingIn extends State {
                   padding: const EdgeInsets.all(8.0),
                   child: RaisedButton(
                     color: Colors.orange[600],
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AccountPage()));
-                    },
+                    onPressed: onSingIn,
                     child: Text(
                       "Sing In",
                       style: TextStyle(color: Colors.white),
@@ -112,5 +115,27 @@ class _SingIn extends State {
         ),
       ),
     );
+  }
+
+  void onSingIn() {
+    snackBarKey.currentState.showSnackBar(snackBarOnSingIn);
+    Map params = Map();
+    params['email'] = email.text;
+    params['password'] = password.text;
+    http.post(urlSingIn, body: params).then((res) {
+      Map resData = jsonDecode(res.body) as Map;
+      var _resStatus = resData['status'];
+      var _accountData = resData['data'];
+      setState(() {
+        if (_resStatus == 1) {
+          accountID = _accountData['id'];
+          print("Account ID : ${accountID}");
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomePage(accountID)));
+        } else if (_resStatus == 0) {
+          snackBarKey.currentState.showSnackBar(snackBarSingInFail);
+        }
+      });
+    });
   }
 }
