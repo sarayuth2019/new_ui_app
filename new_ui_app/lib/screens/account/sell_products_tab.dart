@@ -28,11 +28,21 @@ class _SellProducts extends State {
       SnackBar(content: Text("กำลังขายลงขาย กรุณารอซักครู่..."));
   final snackBarOnSaveSuccess = SnackBar(content: Text("ลงขายสินค้า สำเร็จ !"));
   final snackBarSaveFail = SnackBar(content: Text("ลงขายสินค้า ล้มเหลว !"));
+  final snackBarNoImage = SnackBar(content: Text("กรุณาใส่รูปภาพสินค้า"));
   bool checkText = false;
+
   String nameMenu;
   int price;
+  String location;
+  String description;
   File imageFile;
-  var imageData;
+  String imageData;
+
+  List listDropdown = [
+    "ตึก 12",
+    "ตึก 14",
+    "ตึก 18",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +96,27 @@ class _SellProducts extends State {
                             ),
                     ),
                   )),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: DropdownButton(
+                  hint: Text("เลือกสถานที่"),
+                  isExpanded: true,
+                  underline: Container(
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.grey)),
+                  ),
+                  value: location,
+                  onChanged: (newValue) {
+                    setState(() {
+                      location = newValue;
+                      print(location);
+                    });
+                  },
+                  items: listDropdown.map((_value) {
+                    return DropdownMenuItem(value: _value, child: Text(_value));
+                  }).toList(),
+                ),
+              ),
               TextFormField(
                 decoration: InputDecoration(hintText: "ชื่อสินค้า"),
                 validator: _checkText,
@@ -99,6 +130,14 @@ class _SellProducts extends State {
                 validator: _checkPrice,
                 onSaved: (num) {
                   price = int.parse(num);
+                },
+              ),
+              TextFormField(
+                maxLines: null,
+                decoration: InputDecoration(hintText: "คำอธิบายสินค้า"),
+                validator: _checkDescription,
+                onSaved: (text) {
+                  description = text;
                 },
               ),
               RaisedButton(
@@ -190,15 +229,27 @@ class _SellProducts extends State {
     }
   }
 
+  String _checkDescription(text) {
+    if (text.length == 0) {
+      return "กรุณาคำอธิบายสินค้า";
+    } else {
+      return null;
+    }
+  }
+
   void onSaveData() {
-    _snackBarKey.currentState.showSnackBar(snackBarOnSave);
-    if (_formKey.currentState.validate()) {
+    if (imageData == null) {
+     _snackBarKey.currentState.showSnackBar(snackBarNoImage);
+    } else if (_formKey.currentState.validate()){
       _formKey.currentState.save();
-      print("account Id ${accountID}");
+      _snackBarKey.currentState.showSnackBar(snackBarOnSave);
+      print("account Id ${accountID.toString()}");
       print(nameMenu);
       print(price);
+      print(imageData);
       saveToDB();
-    } else {
+    }
+    else{
       setState(() {
         checkText = true;
       });
@@ -207,9 +258,11 @@ class _SellProducts extends State {
 
   void saveToDB() {
     Map params = Map();
-    params['user_id'] = accountID.toString();
+    params['user'] = accountID.toString();
     params['name'] = nameMenu.toString();
     params['price'] = price.toString();
+    params['description'] = description.toString();
+    params['location'] = location.toString();
     params['image'] = imageData.toString();
     http.post(urlSellProducts, body: params).then((res) {
       Map _resData = jsonDecode(utf8.decode(res.bodyBytes)) as Map;
