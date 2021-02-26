@@ -51,14 +51,12 @@ class _HomePage extends State {
                   icon: Icon(Icons.shopping_cart),
                   onPressed: () {
                     accountID == null
-                        ? Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SingIn()))
+                        ? Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SingIn()))
                         : Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CartPage(accountID)));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CartPage(accountID)));
                   }),
               IconButton(
                   icon: Icon(Icons.notifications),
@@ -166,7 +164,8 @@ class _HomePage extends State {
                                 : Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => CartPage(accountID)));
+                                        builder: (context) =>
+                                            CartPage(accountID)));
                           },
                           child: Card(
                             color: Colors.orange[600],
@@ -271,10 +270,11 @@ class _HomePage extends State {
                     child: Container(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePage(null)));
+                                  builder: (context) => HomePage(null)),
+                              (route) => false);
                         },
                         child: Card(
                           color: Colors.orange[600],
@@ -297,7 +297,7 @@ class _HomePage extends State {
             ),
           ),
           body: TabBarView(
-            children: [AllProductsPage(), AllDealsPage()],
+            children: [AllProductsPage(accountID), AllDealsPage(accountID)],
           )),
       initialIndex: 0,
       length: 2,

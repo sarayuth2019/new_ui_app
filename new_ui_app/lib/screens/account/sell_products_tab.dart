@@ -191,6 +191,7 @@ class _SellProducts extends State {
         imageFile = File(_imageGallery.path);
       });
       imageData = base64Encode(imageFile.readAsBytesSync());
+      Navigator.of(context).pop();
       return imageData;
     } else {
       return null;
@@ -207,6 +208,7 @@ class _SellProducts extends State {
         imageFile = File(_imageGallery.path);
       });
       imageData = base64Encode(imageFile.readAsBytesSync());
+      Navigator.of(context).pop();
       return imageData;
     } else {
       return null;

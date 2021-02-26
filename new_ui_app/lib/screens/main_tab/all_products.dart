@@ -7,14 +7,20 @@ import 'package:http/http.dart' as http;
 import 'package:new_ui_app/screens/main_tab/products_page.dart';
 
 class AllProductsPage extends StatefulWidget {
+  AllProductsPage(this.accountID);
+  final int accountID;
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _AllProductsPage();
+    return _AllProductsPage(accountID);
   }
 }
 
 class _AllProductsPage extends State {
+  _AllProductsPage(this.accountID);
+  final int accountID;
+
   final urlListAllProducts = "https://testheroku11111.herokuapp.com/Item/list";
 
   @override
@@ -37,6 +43,7 @@ class _AllProductsPage extends State {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ProductsPage(
+                                      accountID,
                                       snapshot.data[index].id,
                                       snapshot.data[index].name,
                                       snapshot.data[index].description,
@@ -71,12 +78,14 @@ class _AllProductsPage extends State {
                                       )
                                     : ClipRRect(
                                         borderRadius: BorderRadius.circular(30),
-                                        child: Image.memory(
-                                          base64Decode(
-                                              snapshot.data[index].image),
+                                        child: Container(
                                           height: 200,
                                           width: 200,
-                                          fit: BoxFit.fill,
+                                          child: Image.memory(
+                                            base64Decode(
+                                                snapshot.data[index].image),
+                                            fit: BoxFit.fill,
+                                          ),
                                         ),
                                       ),
                               ),
@@ -181,7 +190,6 @@ class _AllProductsPage extends State {
 
     List<_Products> listAllProducts = [];
     for (var p in _dataAllProducts) {
-      print("list data....");
       _Products _products = _Products(
           p['id'],
           p['name'],
@@ -193,9 +201,9 @@ class _AllProductsPage extends State {
           p['user_id'],
           p['date'],
           p['image']);
-      listAllProducts.insert(0,_products);
+      listAllProducts.insert(0, _products);
     }
-    print("Products length : ${listAllProducts.length}");
+    print("All Products length : ${listAllProducts.length}");
     return listAllProducts;
   }
 }

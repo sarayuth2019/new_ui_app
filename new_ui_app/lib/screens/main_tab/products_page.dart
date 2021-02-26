@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:new_ui_app/screens/drawer/sing_in_up/sing_in_page.dart';
 
 class ProductsPage extends StatefulWidget {
   ProductsPage(
+      this.accountID,
       this.id,
       this.name,
       this.description,
@@ -17,6 +19,7 @@ class ProductsPage extends StatefulWidget {
       this.data,
       this.image);
 
+  final int accountID;
   final int id;
   final String name;
   final String description;
@@ -31,13 +34,24 @@ class ProductsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _ProductsPage(id, name, description, rating, countRating, price,
-        location, user_id, data, image);
+    return _ProductsPage(
+        accountID,
+        id,
+        name,
+        description,
+        rating,
+        countRating,
+        price,
+        location,
+        user_id,
+        data,
+        image);
   }
 }
 
 class _ProductsPage extends State {
   _ProductsPage(
+      this.accountID,
       this.id,
       this.name,
       this.description,
@@ -49,6 +63,7 @@ class _ProductsPage extends State {
       this.data,
       this.image);
 
+  final int accountID;
   final int id;
   final String name;
   final String description;
@@ -88,24 +103,24 @@ class _ProductsPage extends State {
             height: 300,
             child: image == null
                 ? Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: Container(
-                        color: Colors.blueGrey,
-                        height: 200,
-                        width: 200,
-                        child: Icon(
-                          Icons.image_outlined,
-                          color: Colors.orange[600],
-                          size: 70,
-                        ),
-                      ),
-                    ),
-                  )
-                : Image.memory(
-                    base64Decode(image),
-                    fit: BoxFit.fill,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: Container(
+                  color: Colors.blueGrey,
+                  height: 200,
+                  width: 200,
+                  child: Icon(
+                    Icons.image_outlined,
+                    color: Colors.orange[600],
+                    size: 70,
                   ),
+                ),
+              ),
+            )
+                : Image.memory(
+              base64Decode(image),
+              fit: BoxFit.fill,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -167,7 +182,7 @@ class _ProductsPage extends State {
                         ],
                       ),
                       Text(
-                        "฿${price*number}",
+                        "฿${price * number}",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
@@ -222,7 +237,14 @@ class _ProductsPage extends State {
                         ],
                       ),
                       GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            if (accountID==null) {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>SingIn()));
+                            }
+                            else{
+                              print("กรุณาไปทำหน้ารถเข็นก่อน ! : account id ${accountID}");
+                            }
+                          },
                           child: Center(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(30),
@@ -232,12 +254,12 @@ class _ProductsPage extends State {
                                 color: Colors.orange[600],
                                 child: Center(
                                     child: Text(
-                                  "Add to cart",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                )),
+                                      "Add to cart",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )),
                               ),
                             ),
                           )),
