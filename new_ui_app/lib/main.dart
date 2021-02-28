@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:new_ui_app/screens/account/account_page.dart';
 import 'package:new_ui_app/screens/appBar/cart/cart_page.dart';
 import 'package:new_ui_app/screens/appBar/promotion/promotion_page.dart';
 import 'package:new_ui_app/screens/appBar/search/search_page.dart';
+import 'package:new_ui_app/screens/drawer/account/account_page.dart';
 import 'package:new_ui_app/screens/drawer/food_drink/food_drink_page.dart';
 import 'package:new_ui_app/screens/drawer/location/location_page.dart';
 import 'package:new_ui_app/screens/drawer/school_supplies/school_supplies_page.dart';
@@ -11,6 +13,7 @@ import 'package:new_ui_app/screens/drawer/sing_in_up/sing_in_page.dart';
 import 'package:new_ui_app/screens/drawer/uniform/uniform_page.dart';
 import 'package:new_ui_app/screens/main_tab/all_deals.dart';
 import 'package:new_ui_app/screens/main_tab/all_products.dart';
+
 
 void main() => runApp(
     MaterialApp(debugShowCheckedModeBanner: false, home: HomePage(null)));
@@ -45,7 +48,7 @@ class _HomePage extends State {
                   icon: Icon(Icons.search),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SearchPage()));
+                        MaterialPageRoute(builder: (context) => SearchPage(accountID)));
                   }),
               IconButton(
                   icon: Icon(Icons.shopping_cart),
@@ -123,7 +126,7 @@ class _HomePage extends State {
                             color: Colors.orange[600],
                             child: ListTile(
                               leading: Icon(
-                                Icons.account_circle_outlined,
+                                Icons.account_circle,
                                 color: Colors.white,
                               ),
                               title: Text(
@@ -144,7 +147,7 @@ class _HomePage extends State {
                             color: Colors.orange[600],
                             child: ListTile(
                               leading: Icon(
-                                Icons.location_on_outlined,
+                                Icons.location_on,
                                 color: Colors.white,
                               ),
                               title: Text(

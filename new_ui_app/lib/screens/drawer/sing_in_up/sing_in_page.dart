@@ -81,35 +81,31 @@ class _SingIn extends State {
                     hintText: "Password", border: InputBorder.none),
               ),
             )),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    color: Colors.orange[600],
-                    onPressed: onSingIn,
-                    child: Text(
-                      "Sing In",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RaisedButton(
+                color: Colors.orange[600],
+                onPressed: onSingIn,
+                child: Text(
+                  "Sing In",
+                  style: TextStyle(color: Colors.white),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    color: Colors.orange[600],
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => SingUp()));
-                    },
-                    child: Text(
-                      "Sing Up",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+              ),
+            ),
+            Text("Don't have account ?",style: TextStyle(color: Colors.white),),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RaisedButton(
+                color: Colors.grey,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SingUp()));
+                },
+                child: Text(
+                  "Sing Up",
+                  style: TextStyle(color: Colors.white),
                 ),
-              ],
+              ),
             ),
           ],
         ),

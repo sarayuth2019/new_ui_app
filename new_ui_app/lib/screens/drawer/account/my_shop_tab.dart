@@ -105,82 +105,84 @@ class _MyShop extends State {
                                     )
                                   ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 120, right: 10),
-                                  child: IconButton(
-                                      icon: Icon(
-                                        Icons.highlight_remove_outlined,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        print('Show Alert Dialog !');
-                                        return showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                  'Delete Products ?',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                content: SingleChildScrollView(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                          child:
-                                                              GestureDetector(
-                                                                  child: Text(
-                                                                      'Delete'),
-                                                                  onTap: () {
-                                                                    http
-                                                                        .get(
-                                                                            "${urlDeleteProducts}/${snapshot.data[index].id}")
-                                                                        .then(
-                                                                            (res) {
-                                                                      var _jsonData =
-                                                                          jsonDecode(
-                                                                              res.body);
-                                                                      var dataStatus =
-                                                                          _jsonData[
-                                                                              'status'];
-                                                                      if (dataStatus == 0) {
-                                                                        setState(() {
-                                                                        });
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                        snackBarKey
-                                                                            .currentState
-                                                                            .showSnackBar(snackBarDelete);
-                                                                        print(
-                                                                            "delete Success");
-                                                                      } else {
-                                                                        return "delete fall";
-                                                                      }
-                                                                    });
-                                                                  })),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Container(
-                                                          child:
-                                                              GestureDetector(
-                                                                  child: Text(
-                                                                      'Cancel'),
-                                                                  onTap: () {
-
-                                                                    Navigator.of(context).pop();
-                                                                  })),
-                                                    ],
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 120, right: 10),
+                                    child: IconButton(
+                                        icon: Icon(
+                                          Icons.highlight_remove_outlined,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          print('Show Alert Dialog !');
+                                          return showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    'Delete Products ?',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
-                                                ),
-                                              );
-                                            });
-                                      }),
+                                                  content: SingleChildScrollView(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                            child:
+                                                                GestureDetector(
+                                                                    child: Text(
+                                                                        'Delete'),
+                                                                    onTap: () {
+                                                                      http
+                                                                          .get(
+                                                                              "${urlDeleteProducts}/${snapshot.data[index].id}")
+                                                                          .then(
+                                                                              (res) {
+                                                                        var _jsonData =
+                                                                            jsonDecode(
+                                                                                res.body);
+                                                                        var dataStatus =
+                                                                            _jsonData[
+                                                                                'status'];
+                                                                        if (dataStatus == 0) {
+                                                                          setState(() {
+                                                                          });
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                          snackBarKey
+                                                                              .currentState
+                                                                              .showSnackBar(snackBarDelete);
+                                                                          print(
+                                                                              "delete Success");
+                                                                        } else {
+                                                                          return "delete fall";
+                                                                        }
+                                                                      });
+                                                                    })),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Container(
+                                                            child:
+                                                                GestureDetector(
+                                                                    child: Text(
+                                                                        'Cancel'),
+                                                                    onTap: () {
+
+                                                                      Navigator.of(context).pop();
+                                                                    })),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                        }),
+                                  ),
                                 )
                               ],
                             )

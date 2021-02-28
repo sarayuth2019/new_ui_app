@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -20,8 +19,9 @@ class AllProductsPage extends StatefulWidget {
 class _AllProductsPage extends State {
   _AllProductsPage(this.accountID);
   final int accountID;
-
   final urlListAllProducts = "https://testheroku11111.herokuapp.com/Item/list";
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,150 +34,159 @@ class _AllProductsPage extends State {
               if (snapshot.data == null) {
                 return Center(child: CircularProgressIndicator());
               } else {
-                return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProductsPage(
-                                      accountID,
-                                      snapshot.data[index].id,
-                                      snapshot.data[index].name,
-                                      snapshot.data[index].description,
-                                      snapshot.data[index].rating,
-                                      snapshot.data[index].countRating,
-                                      snapshot.data[index].price,
-                                      snapshot.data[index].location,
-                                      snapshot.data[index].user_id,
-                                      snapshot.data[index].data,
-                                      snapshot.data[index].image,
-                                    )));
-                      },
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: snapshot.data[index].image == null
-                                    ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(30),
-                                        child: Container(
-                                            color: Colors.blueGrey,
+                return RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProductsPage(
+                                        accountID,
+                                        snapshot.data[index].id,
+                                        snapshot.data[index].name,
+                                        snapshot.data[index].description,
+                                        snapshot.data[index].rating,
+                                        snapshot.data[index].countRating,
+                                        snapshot.data[index].price,
+                                        snapshot.data[index].location,
+                                        snapshot.data[index].user_id,
+                                        snapshot.data[index].data,
+                                        snapshot.data[index].image,
+                                      )));
+                        },
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: snapshot.data[index].image == null
+                                      ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(30),
+                                          child: Container(
+                                              color: Colors.blueGrey,
+                                              height: 200,
+                                              width: 200,
+                                              child: Icon(
+                                                Icons.image_outlined,
+                                                color: Colors.orange[600],
+                                                size: 40,
+                                              )),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius: BorderRadius.circular(30),
+                                          child: Container(
                                             height: 200,
                                             width: 200,
-                                            child: Icon(
-                                              Icons.image_outlined,
-                                              color: Colors.orange[600],
-                                              size: 40,
-                                            )),
-                                      )
-                                    : ClipRRect(
-                                        borderRadius: BorderRadius.circular(30),
-                                        child: Container(
-                                          height: 200,
-                                          width: 200,
-                                          child: Image.memory(
-                                            base64Decode(
-                                                snapshot.data[index].image),
-                                            fit: BoxFit.fill,
+                                            child: Image.memory(
+                                              base64Decode(
+                                                  snapshot.data[index].image),
+                                              fit: BoxFit.fill,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                              ),
-                              Flexible(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "${snapshot.data[index].name}",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "฿${snapshot.data[index].price}",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    RatingBar.builder(
-                                      ignoreGestures: true,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      initialRating: snapshot.data[index].rating
-                                          .toDouble(),
-                                      itemBuilder: (context, r) {
-                                        return Icon(
-                                          Icons.star_rounded,
-                                          color: Colors.amber,
-                                        );
-                                      },
-                                      itemSize: 30,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            "(${snapshot.data[index].rating})",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.blueGrey),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Icon(
-                                            Icons.supervisor_account,
-                                            color: Colors.blue,
-                                          ),
-                                          Text(
-                                            "(${snapshot.data[index].countRating})",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.blueGrey),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.location_on,
-                                            color: Colors.red,
-                                          ),
-                                          Text(
-                                              "${snapshot.data[index].location}")
-                                        ],
-                                      ),
-                                    )
-                                  ],
                                 ),
-                              )
-                            ],
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "${snapshot.data[index].name}",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "฿${snapshot.data[index].price}",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      RatingBar.builder(
+                                        ignoreGestures: true,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        initialRating: snapshot.data[index].rating
+                                            .toDouble(),
+                                        itemBuilder: (context, r) {
+                                          return Icon(
+                                            Icons.star_rounded,
+                                            color: Colors.amber,
+                                          );
+                                        },
+                                        itemSize: 30,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              "(${snapshot.data[index].rating})",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.blueGrey),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Icon(
+                                              Icons.supervisor_account,
+                                              color: Colors.blue,
+                                            ),
+                                            Text(
+                                              "(${snapshot.data[index].countRating})",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.blueGrey),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.location_on,
+                                              color: Colors.red,
+                                            ),
+                                            Text(
+                                                "${snapshot.data[index].location}")
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 );
               }
             }));
+  }
+  Future<void> _onRefresh() async {
+    setState(() {
+    });
+    await Future.delayed(Duration(seconds: 3));
+    return null;
   }
 
   Future<List<_Products>> _listProducts() async {

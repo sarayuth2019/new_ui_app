@@ -2,8 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:new_ui_app/screens/account/my_shop_tab.dart';
-import 'package:new_ui_app/screens/account/sell_products_tab.dart';
+import 'package:new_ui_app/screens/drawer/account/my_shop_tab.dart';
+import 'package:new_ui_app/screens/drawer/account/sell_products_tab.dart';
 
 class AccountPage extends StatefulWidget {
   AccountPage(this.accountID);

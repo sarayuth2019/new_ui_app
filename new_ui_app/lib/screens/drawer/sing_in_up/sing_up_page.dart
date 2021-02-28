@@ -201,7 +201,7 @@ class _SingUp extends State {
 
       setState(() {
         if(_resStatus == 1){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>SingIn()));
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>SingIn()), (route) => false);
         }else if(_resStatus == 0){
           _snackBarKey.currentState.showSnackBar(singUpFail);
         }
