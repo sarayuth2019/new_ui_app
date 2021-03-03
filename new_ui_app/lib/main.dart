@@ -1,19 +1,14 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_ui_app/screens/appBar/cart/cart_page.dart';
 import 'package:new_ui_app/screens/appBar/promotion/promotion_page.dart';
 import 'package:new_ui_app/screens/appBar/search/search_page.dart';
 import 'package:new_ui_app/screens/drawer/account/account_page.dart';
-import 'package:new_ui_app/screens/drawer/food_drink/food_drink_page.dart';
+import 'package:new_ui_app/screens/drawer/account/sing_in_up/sing_in_page.dart';
 import 'package:new_ui_app/screens/drawer/location/location_page.dart';
-import 'package:new_ui_app/screens/drawer/school_supplies/school_supplies_page.dart';
-import 'package:new_ui_app/screens/drawer/sing_in_up/sing_in_page.dart';
-import 'package:new_ui_app/screens/drawer/uniform/uniform_page.dart';
+import 'package:new_ui_app/screens/drawer/productsGroup/products_group_page.dart';
 import 'package:new_ui_app/screens/main_tab/all_deals.dart';
 import 'package:new_ui_app/screens/main_tab/all_products.dart';
-
 
 void main() => runApp(
     MaterialApp(debugShowCheckedModeBanner: false, home: HomePage(null)));
@@ -47,8 +42,10 @@ class _HomePage extends State {
               IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SearchPage(accountID)));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SearchPage(accountID)));
                   }),
               IconButton(
                   icon: Icon(Icons.shopping_cart),
@@ -206,7 +203,8 @@ class _HomePage extends State {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => FoodAndDrinkPage()));
+                                    builder: (context) =>
+                                        ProductsGroupPage(accountID, 1)));
                           },
                           child: Card(
                             color: Colors.orange[600],
@@ -228,7 +226,7 @@ class _HomePage extends State {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        SchoolSuppliesPage()));
+                                        ProductsGroupPage(accountID, 2)));
                           },
                           child: Card(
                             color: Colors.orange[600],
@@ -249,7 +247,8 @@ class _HomePage extends State {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => UniformPage()));
+                                    builder: (context) =>
+                                        ProductsGroupPage(accountID, 3)));
                           },
                           child: Card(
                             color: Colors.orange[600],

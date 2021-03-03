@@ -29,19 +29,29 @@ class _SellProducts extends State {
   final snackBarOnSaveSuccess = SnackBar(content: Text("ลงขายสินค้า สำเร็จ !"));
   final snackBarSaveFail = SnackBar(content: Text("ลงขายสินค้า ล้มเหลว !"));
   final snackBarNoImage = SnackBar(content: Text("กรุณาใส่รูปภาพสินค้า"));
+  final snackBarNoLocation = SnackBar(content: Text("กรุณาเลือกสถานที่"));
+  final snackBarNoGroupItem = SnackBar(content: Text("กรุณาเลือกประเภทสินค้า"));
   bool checkText = false;
 
   String nameMenu;
   int price;
   String location;
+  String _groupItem;
+  int groupItem;
   String description;
   File imageFile;
   String imageData;
 
-  List listDropdown = [
+  List listDropdownLocation = [
+    "ตึก 5",
+    "ตึก 7",
     "ตึก 12",
-    "ตึก 14",
-    "ตึก 18",
+  ];
+
+  List listDropdownGroupItem = [
+    "อาหาร&เครื่องดื่ม",
+    "อุปกรณ์การเรียน",
+    "เครื่องแต่งกาย"
   ];
 
   @override
@@ -60,8 +70,8 @@ class _SellProducts extends State {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "ID ${accountID.toString()}",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  "กรุณากรอกข้อมูลสินค้าให้ครบ",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
@@ -112,7 +122,38 @@ class _SellProducts extends State {
                       print(location);
                     });
                   },
-                  items: listDropdown.map((_value) {
+                  items: listDropdownLocation.map((_value) {
+                    return DropdownMenuItem(value: _value, child: Text(_value));
+                  }).toList(),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: DropdownButton(
+                  hint: Text("เลือกประเภทของสินค้า"),
+                  isExpanded: true,
+                  underline: Container(
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.grey)),
+                  ),
+                  value: _groupItem,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _groupItem = newValue;
+                      print(_groupItem);
+                      if (_groupItem == "อาหาร&เครื่องดื่ม") {
+                        groupItem = 1;
+                      } else if (_groupItem == "อุปกรณ์การเรียน") {
+                        groupItem = 2;
+                      } else if (_groupItem == "เครื่องแต่งกาย") {
+                        groupItem = 3;
+                      } else {
+                        return null;
+                      }
+                      print("GroupItem : ${groupItem.toString()}");
+                    });
+                  },
+                  items: listDropdownGroupItem.map((_value) {
                     return DropdownMenuItem(value: _value, child: Text(_value));
                   }).toList(),
                 ),
@@ -241,17 +282,22 @@ class _SellProducts extends State {
 
   void onSaveData() {
     if (imageData == null) {
-     _snackBarKey.currentState.showSnackBar(snackBarNoImage);
-    } else if (_formKey.currentState.validate()){
+      _snackBarKey.currentState.showSnackBar(snackBarNoImage);
+    } else if (location == null) {
+      _snackBarKey.currentState.showSnackBar(snackBarNoLocation);
+    } else if (groupItem == null) {
+      _snackBarKey.currentState.showSnackBar(snackBarNoGroupItem);
+    } else if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       _snackBarKey.currentState.showSnackBar(snackBarOnSave);
+
       print("account Id ${accountID.toString()}");
-      print(nameMenu);
-      print(price);
-      print(imageData);
+      print("name product : ${nameMenu.toString()}");
+      print("price : ${price.toString()}");
+      print("group item : ${groupItem.toString()}");
+
       saveToDB();
-    }
-    else{
+    } else {
       setState(() {
         checkText = true;
       });
@@ -265,6 +311,7 @@ class _SellProducts extends State {
     params['price'] = price.toString();
     params['description'] = description.toString();
     params['location'] = location.toString();
+    params['group'] = groupItem.toString();
     params['image'] = imageData.toString();
     http.post(urlSellProducts, body: params).then((res) {
       Map _resData = jsonDecode(utf8.decode(res.bodyBytes)) as Map;

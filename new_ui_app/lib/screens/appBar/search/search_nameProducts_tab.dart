@@ -144,7 +144,7 @@ class _SearchNameProducts extends State {
           p['count_rating'],
           p['price'],
           p['location'],
-          p['user_id'],
+          p['user'],
           p['date'],
           p['image']);
       listAllProducts.add(_products);

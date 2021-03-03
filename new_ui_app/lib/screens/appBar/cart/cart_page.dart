@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:new_ui_app/screens/appBar/cart/my_cart_tab.dart';
+import 'package:new_ui_app/screens/appBar/cart/my_order_tab.dart';
 
 class CartPage extends StatefulWidget {
   CartPage(this.accountID);
@@ -21,16 +23,29 @@ class _CartPage extends State {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      backgroundColor: Colors.blueGrey,
-      appBar: AppBar(backgroundColor: Colors.orange[600],
-        title: Text("My Cart ID ${accountID.toString()}"),
-      ),
-      body: Container(
-        child: ListView(
-          children: [],
+    return DefaultTabController(
+      child: Scaffold(
+        backgroundColor: Colors.blueGrey,
+        appBar: AppBar(
+          backgroundColor: Colors.orange[600],
+          title: Text("My Cart ID ${accountID.toString()}"),
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                child: Text("My Cart"),
+              ),
+              Tab(
+                child: Text("My Order"),
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [MyCartTab(accountID), MyOrderTab(accountID)],
         ),
       ),
+      initialIndex: 0,
+      length: 2,
     );
   }
 }

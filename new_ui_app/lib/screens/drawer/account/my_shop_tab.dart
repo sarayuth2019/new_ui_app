@@ -105,11 +105,9 @@ class _MyShop extends State {
                                     )
                                   ],
                                 ),
-                                Flexible(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 120, right: 10),
-                                    child: IconButton(
+                                Stack(
+                                  children: [
+                                    IconButton(
                                         icon: Icon(
                                           Icons.highlight_remove_outlined,
                                           color: Colors.red,
@@ -126,7 +124,8 @@ class _MyShop extends State {
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
-                                                  content: SingleChildScrollView(
+                                                  content:
+                                                      SingleChildScrollView(
                                                     child: Column(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
@@ -138,27 +137,14 @@ class _MyShop extends State {
                                                                     child: Text(
                                                                         'Delete'),
                                                                     onTap: () {
-                                                                      http
-                                                                          .get(
-                                                                              "${urlDeleteProducts}/${snapshot.data[index].id}")
-                                                                          .then(
-                                                                              (res) {
-                                                                        var _jsonData =
-                                                                            jsonDecode(
-                                                                                res.body);
-                                                                        var dataStatus =
-                                                                            _jsonData[
-                                                                                'status'];
+                                                                      http.get("${urlDeleteProducts}/${snapshot.data[index].id}").then((res) {
+                                                                        var _jsonData = jsonDecode(res.body);
+                                                                        var dataStatus = _jsonData['status'];
                                                                         if (dataStatus == 0) {
-                                                                          setState(() {
-                                                                          });
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                          snackBarKey
-                                                                              .currentState
-                                                                              .showSnackBar(snackBarDelete);
-                                                                          print(
-                                                                              "delete Success");
+                                                                          setState(() {});
+                                                                          Navigator.of(context).pop();
+                                                                          snackBarKey.currentState.showSnackBar(snackBarDelete);
+                                                                          print("delete Success");
                                                                         } else {
                                                                           return "delete fall";
                                                                         }
@@ -173,8 +159,9 @@ class _MyShop extends State {
                                                                     child: Text(
                                                                         'Cancel'),
                                                                     onTap: () {
-
-                                                                      Navigator.of(context).pop();
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
                                                                     })),
                                                       ],
                                                     ),
@@ -182,7 +169,7 @@ class _MyShop extends State {
                                                 );
                                               });
                                         }),
-                                  ),
+                                  ],
                                 )
                               ],
                             )
@@ -196,9 +183,9 @@ class _MyShop extends State {
         ));
   }
 
-  Future<List<_Item>> listItemByUser() async {
+  Future<List<_Products>> listItemByUser() async {
     Map params = Map();
-    List<_Item> listItem = [];
+    List<_Products> listItem = [];
     params['user'] = accountID.toString();
     await http.post(urlListItemByUser, body: params).then((res) {
       print("listItem By Account Success");
@@ -206,7 +193,7 @@ class _MyShop extends State {
       var _itemData = _jsonRes['data'];
 
       for (var i in _itemData) {
-        _Item _item = _Item(
+        _Products _products = _Products(
             i['id'],
             i['name'],
             i['description'],
@@ -217,7 +204,7 @@ class _MyShop extends State {
             i['user_id'],
             i['date'],
             i['image']);
-        listItem.insert(0, _item);
+        listItem.insert(0, _products);
       }
     });
     print("Products By Account : ${listItem.length}");
@@ -225,7 +212,7 @@ class _MyShop extends State {
   }
 }
 
-class _Item {
+class _Products {
   final int id;
   final String name;
   final String description;
@@ -237,7 +224,7 @@ class _Item {
   final String data;
   final String image;
 
-  _Item(
+  _Products(
     this.id,
     this.name,
     this.description,

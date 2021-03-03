@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_ui_app/main.dart';
-import 'package:new_ui_app/screens/drawer/sing_in_up/sing_up_page.dart';
+import 'file:///C:/Users/TopSaga/Desktop/new_ui_app/lib/screens/drawer/account/sing_in_up/sing_up_page.dart';
 import 'package:http/http.dart' as http;
 
 class SingIn extends StatefulWidget {

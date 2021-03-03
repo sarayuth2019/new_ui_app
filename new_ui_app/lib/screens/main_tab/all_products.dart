@@ -5,6 +5,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_ui_app/screens/main_tab/products_page.dart';
 
+
+
 class AllProductsPage extends StatefulWidget {
   AllProductsPage(this.accountID);
   final int accountID;
@@ -190,13 +192,11 @@ class _AllProductsPage extends State {
   }
 
   Future<List<_Products>> _listProducts() async {
-    print("connect to Api...");
+    print("connect to Api All Products...");
     var _getDataProDucts = await http.get(urlListAllProducts);
-    print("connect to Api Success");
-    var _jsonDataAllProducts =
-        jsonDecode(utf8.decode(_getDataProDucts.bodyBytes));
+    print("connect to Api All Products Success");
+    var _jsonDataAllProducts = jsonDecode(utf8.decode(_getDataProDucts.bodyBytes));
     var _dataAllProducts = _jsonDataAllProducts['data'];
-
     List<_Products> listAllProducts = [];
     for (var p in _dataAllProducts) {
       _Products _products = _Products(
@@ -207,7 +207,7 @@ class _AllProductsPage extends State {
           p['count_rating'],
           p['price'],
           p['location'],
-          p['user_id'],
+          p['user'],
           p['date'],
           p['image']);
       listAllProducts.insert(0, _products);
@@ -216,7 +216,6 @@ class _AllProductsPage extends State {
     return listAllProducts;
   }
 }
-
 class _Products {
   final int id;
   final String name;
@@ -230,15 +229,15 @@ class _Products {
   final String image;
 
   _Products(
-    this.id,
-    this.name,
-    this.description,
-    this.rating,
-    this.countRating,
-    this.price,
-    this.location,
-    this.user_id,
-    this.data,
-    this.image,
-  );
+      this.id,
+      this.name,
+      this.description,
+      this.rating,
+      this.countRating,
+      this.price,
+      this.location,
+      this.user_id,
+      this.data,
+      this.image,
+      );
 }

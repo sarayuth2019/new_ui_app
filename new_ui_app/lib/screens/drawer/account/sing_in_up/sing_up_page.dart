@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart'as http;
-import 'package:new_ui_app/screens/drawer/sing_in_up/sing_in_page.dart';
+import 'file:///C:/Users/TopSaga/Desktop/new_ui_app/lib/screens/drawer/account/sing_in_up/sing_in_page.dart';
+
 
 class SingUp extends StatefulWidget {
   @override
@@ -201,7 +202,7 @@ class _SingUp extends State {
 
       setState(() {
         if(_resStatus == 1){
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>SingIn()), (route) => false);
+          Navigator.pop(context, MaterialPageRoute(builder: (context)=>SingIn()));
         }else if(_resStatus == 0){
           _snackBarKey.currentState.showSnackBar(singUpFail);
         }

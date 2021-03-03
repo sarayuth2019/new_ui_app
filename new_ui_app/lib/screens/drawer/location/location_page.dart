@@ -42,10 +42,7 @@ class _LocationPage extends State {
           initialCameraPosition: CameraPosition(
               target: LatLng(16.4306698, 102.8639935), zoom: 16.5),
           markers: {
-            Marker(
-                markerId: MarkerId("18"),
-                position: LatLng(16.430763, 102.8631719),
-                infoWindow: InfoWindow(title: "ตึก 18")),
+
             Marker(
                 markerId: MarkerId("12"),
                 position: LatLng(16.4301599, 102.8622626),
