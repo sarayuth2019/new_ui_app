@@ -32,12 +32,14 @@ class _AccountPage extends State {
           backgroundColor: Colors.orange[600],
           title: Text("My Account ID ${accountID.toString()}"),
           bottom: TabBar(
+            labelColor: Colors.white,
+            indicatorColor: Colors.white,
             tabs: [
               Tab(
-                child: Text("My Shop"),
+                child: Text("ร้านของฉัน"),
               ),
               Tab(
-                child: Text("Sell Products"),
+                child: Text("ลงขายสินค้า"),
               )
             ],
           ),

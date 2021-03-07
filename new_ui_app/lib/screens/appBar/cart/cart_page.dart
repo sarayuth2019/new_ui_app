@@ -30,12 +30,14 @@ class _CartPage extends State {
           backgroundColor: Colors.orange[600],
           title: Text("My Cart ID ${accountID.toString()}"),
           bottom: TabBar(
+            labelColor: Colors.white,
+            indicatorColor: Colors.white,
             tabs: [
               Tab(
-                child: Text("My Cart"),
+                child: Text("รถเข็น"),
               ),
               Tab(
-                child: Text("My Order"),
+                child: Text("ที่สั่งแล้ว"),
               ),
             ],
           ),

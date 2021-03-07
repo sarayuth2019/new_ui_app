@@ -30,6 +30,8 @@ class _HomePage extends State {
 
   final accountID;
 
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -39,35 +41,50 @@ class _HomePage extends State {
             backgroundColor: Colors.orange[600],
             title: Text("RMUTI SHOP"),
             actions: [
-              IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SearchPage(accountID)));
-                  }),
-              IconButton(
-                  icon: Icon(Icons.shopping_cart),
-                  onPressed: () {
-                    accountID == null
-                        ? Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => SingIn()))
-                        : Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CartPage(accountID)));
-                  }),
-              IconButton(
-                  icon: Icon(Icons.notifications),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PromotionPage()));
-                  }),
+              Container(
+                child: IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SearchPage(accountID)));
+                    }),
+              ),
+              Container(
+                child: accountID == null
+                    ? IconButton(
+                        icon: Icon(Icons.shopping_cart),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SingIn()));
+                        })
+                    : IconButton(
+                        icon: Icon(Icons.shopping_cart),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CartPage(accountID)));
+                        }),
+              ),
+              Container(
+                child: IconButton(
+                    icon: Icon(Icons.notifications_on),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PromotionPage()));
+                    }),
+              ),
             ],
             bottom: TabBar(
+              labelColor: Colors.white,
+              indicatorColor: Colors.white,
               tabs: [
                 Tab(
                   text: "All Products",
@@ -191,7 +208,7 @@ class _HomePage extends State {
                         Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Text(
-                            "Popular Categories",
+                            "Categories",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,

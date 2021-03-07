@@ -28,6 +28,7 @@ dependencies:
   google_maps_flutter: ^1.2.0
   location: 2.3.5
 
+
   flutter:
     sdk: flutter
 

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
@@ -20,25 +19,26 @@ class _MyCartTab extends State {
   _MyCartTab(this.accountID);
 
   final int accountID;
-  final urlCartByCustomer =
-      "https://testheroku11111.herokuapp.com/Cart/find/customer";
-  final urlDeleteProductInCart =
-      "https://testheroku11111.herokuapp.com/Cart/delete/";
+  final urlCartByCustomer = "https://testheroku11111.herokuapp.com/Cart/find/customer";
+  final urlSaveToOrder = "https://testheroku11111.herokuapp.com/Order/save";
+  final urlDeleteProductInCart = "https://testheroku11111.herokuapp.com/Cart/delete/";
   final snackBarKey = GlobalKey<ScaffoldState>();
   final snackBarOnDelete = SnackBar(content: Text("กำลังลบสินค้า..."));
-  final snackBarOnDeleteSuccess =
-      SnackBar(content: Text("กำลังลบสินค้า สำเร็จ !"));
-  final snackBarDeleteFall =
-      SnackBar(content: Text("ผิดพลาด ! กรุณาลองใหม่อีกครั้ง"));
+  final snackBarOnDeleteSuccess = SnackBar(content: Text("กำลังลบสินค้า สำเร็จ !"));
+  final snackBarDeleteFall = SnackBar(content: Text("ผิดพลาด ! กรุณาลองใหม่อีกครั้ง"));
+  final snackBarSaveToOrder = SnackBar(content: Text("กรุณารอซักครู่ กำลังสั่งซื้อ..."));
+  final snackBarSaveToOrderSuccess = SnackBar(content: Text("สั่งซื้อสำเร็จ !"));
+  final snackBarSaveToOrderFall = SnackBar(content: Text("สั่งซื้อผิดพลาด กรุณาลองใหม่อีกครั้ง !"));
+  List _listProductsByCustomer = [];
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       key: snackBarKey,
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.blueGrey,
       body: FutureBuilder(
-          future: listProductsByCustomer(),
+          future: listCartByCustomer(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.data == null) {
               return Center(child: CircularProgressIndicator());
@@ -123,16 +123,16 @@ class _MyCartTab extends State {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          "ราคาสินค้าโดยรวม : ฿${snapshot.data.length > 0 ? snapshot.data.map((_snapshot) => _snapshot.price * _snapshot.number).reduce((value, element) => value + element).toString() : 0}",
+                          "ราคาสินค้าทั้งหมด : ฿${snapshot.data.length > 0 ? snapshot.data.map((_snapshot) => _snapshot.price * _snapshot.number).reduce((value, element) => value + element).toString() : 0}",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         GestureDetector(
-                          onTap: (){
-                            print("save to order");
-                          },
-                          child: ClipRRect(borderRadius: BorderRadius.circular(1),
-                              child: Container(width: 110,
+                          onTap: saveToOrder,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(1),
+                              child: Container(
+                                  width: 110,
                                   color: Colors.orange[600],
                                   child: Center(
                                     child: Text(
@@ -154,7 +154,7 @@ class _MyCartTab extends State {
     );
   }
 
-  Future<List<_Products>> listProductsByCustomer() async {
+  Future<List<_Products>> listCartByCustomer() async {
     Map params = Map();
     List<_Products> listProductsByCustomer = [];
     params['customer'] = accountID.toString();
@@ -166,7 +166,7 @@ class _MyCartTab extends State {
       var productsData = jsonData['data'];
 
       for (var p in productsData) {
-        print("list products...");
+        print("list Cart products...");
         _Products _products = _Products(
             p['id'],
             p['status'],
@@ -180,8 +180,34 @@ class _MyCartTab extends State {
         listProductsByCustomer.add(_products);
       }
     });
-    print("Group Products length : ${listProductsByCustomer.length}");
+    print("Cart Products length : ${listProductsByCustomer.length}");
+    _listProductsByCustomer = listProductsByCustomer;
     return listProductsByCustomer;
+  }
+
+  void saveToOrder() {
+    snackBarKey.currentState.showSnackBar(snackBarSaveToOrder);
+    print("Save to Order...");
+    _listProductsByCustomer.forEach((element) {
+      Map params = Map();
+      params['name'] = element.name.toString();
+      params['number'] = element.number.toString();
+      params['price'] = element.price.toString();
+      params['customer'] = element.customer_id.toString();
+      params['user'] = element.seller_id.toString();
+      params['image'] = element.image.toString();
+      http.post(urlSaveToOrder, body: params).then((res) {
+        print(res.body);
+        Map jsonData = jsonDecode(res.body);
+        var statusData = jsonData['status'];
+        if(statusData==1){
+          snackBarKey.currentState.showSnackBar(snackBarSaveToOrderSuccess);
+        }else{
+          snackBarKey.currentState.showSnackBar(snackBarSaveToOrderFall);
+        }
+      });
+    });
+    print("Order length : ${_listProductsByCustomer.length}");
   }
 }
 

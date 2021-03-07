@@ -20,7 +20,7 @@ class _SingUp extends State {
   final _formKey = GlobalKey<FormState>();
   final _snackBarKey = GlobalKey<ScaffoldState>();
   final singUpSnackBar =
-      SnackBar(content: Text("Please wait a moment , Sing Up..."));
+      SnackBar(content: Text("กำลังสมัคสมาชิก กรุณารอซักครู่..."));
   final singUpFail = SnackBar(content: Text("Email นี้มีผู้ใช้แล้ว"));
   bool _checkText = false;
   String email;

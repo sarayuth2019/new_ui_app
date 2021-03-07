@@ -19,6 +19,13 @@ class _LocationPage extends State {
   LocationData _locationData;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getMyLocation();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
@@ -71,6 +78,6 @@ class _LocationPage extends State {
     _locationData = await getMyLocation();
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(_locationData.latitude, _locationData.longitude),
-        zoom: 19)));
+        zoom: 18)));
   }
 }

@@ -16,7 +16,7 @@ class SingIn extends StatefulWidget {
 class _SingIn extends State {
   final snackBarKey = GlobalKey<ScaffoldState>();
   final snackBarOnSingIn =
-      SnackBar(content: Text("Please wait a moment , Sing In..."));
+      SnackBar(content: Text("กำลังเข้าสู้ระบบ กรุณารอซักครู่..."));
   final snackBarSingInFail =
       SnackBar(content: Text("กรุณาตรวจสอบ Email หรือ Password"));
   final urlSingIn = "https://testheroku11111.herokuapp.com/User/Login";

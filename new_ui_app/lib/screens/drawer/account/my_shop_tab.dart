@@ -20,7 +20,8 @@ class _MyShop extends State {
 
   final accountID;
   final snackBarKey = GlobalKey<ScaffoldState>();
-  final snackBarDelete = SnackBar(content: Text("Delete Success !"));
+  final snackBarDeleteSuccess = SnackBar(content: Text("ลบสินค้าสำเร็จ !"));
+  final snackBarDeleteFall = SnackBar(content: Text("ลบสินค้าผิดพลาด !"));
   final urlListItemByUser =
       "https://testheroku11111.herokuapp.com/Item/find/user";
   final urlDeleteProducts =
@@ -58,120 +59,93 @@ class _MyShop extends State {
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, index) {
                       return Card(
-                        child: Column(
+                        child: Row(
                           children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(30),
-                                    child: Container(
-                                      height: 120,
-                                      width: 120,
-                                      child: Image.memory(
-                                        base64Decode(
-                                            snapshot.data[index].image),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.memory(
+                                    base64Decode(snapshot.data[index].image),
+                                    height: 100,
+                                    width: 100,
+                                    fit: BoxFit.fill,
+                                  )),
+                            ),
+                            Expanded(
+                              child: ListTile(
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    return showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Select Choice'),
+                                            content: SingleChildScrollView(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                      child: GestureDetector(
+                                                          child:
+                                                              Text('Delete'),onTap: (){
+                                                            http.get("${urlDeleteProducts}${snapshot.data[index].id}").then((res){
+                                                              Map jsonData = jsonDecode(res.body)as Map;
+                                                              var statusData = jsonData['status'];
+                                                              if(statusData == 0){
+                                                                setState(() {
+                                                                });
+                                                                Navigator.of(context).pop();
+                                                                snackBarKey.currentState.showSnackBar(snackBarDeleteSuccess);
+                                                              }else{
+                                                                snackBarKey.currentState.showSnackBar(snackBarDeleteFall);
+                                                              }
+                                                            });
+                                                      },)),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Container(
+                                                    child: GestureDetector(
+                                                        child: Text('Cancel'),onTap:(){
+                                                          Navigator.of(context).pop();
+                                                    },),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  icon: Icon(
+                                    Icons.remove_circle_outline,
+                                    color: Colors.red,
                                   ),
                                 ),
-                                Column(
+                                title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       "${snapshot.data[index].name}",
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    Text(
-                                      "฿${snapshot.data[index].price}",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                    Text("฿${snapshot.data[index].price}"),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
                                       children: [
                                         Icon(
                                           Icons.location_on,
                                           color: Colors.red,
                                         ),
-                                        Text("${snapshot.data[index].location}")
+                                        Text(
+                                            "${snapshot.data[index].location}"),
                                       ],
                                     )
                                   ],
                                 ),
-                                Stack(
-                                  children: [
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.highlight_remove_outlined,
-                                          color: Colors.red,
-                                        ),
-                                        onPressed: () {
-                                          print('Show Alert Dialog !');
-                                          return showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                    'Delete Products ?',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  content:
-                                                      SingleChildScrollView(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Container(
-                                                            child:
-                                                                GestureDetector(
-                                                                    child: Text(
-                                                                        'Delete'),
-                                                                    onTap: () {
-                                                                      http.get("${urlDeleteProducts}/${snapshot.data[index].id}").then((res) {
-                                                                        var _jsonData = jsonDecode(res.body);
-                                                                        var dataStatus = _jsonData['status'];
-                                                                        if (dataStatus == 0) {
-                                                                          setState(() {});
-                                                                          Navigator.of(context).pop();
-                                                                          snackBarKey.currentState.showSnackBar(snackBarDelete);
-                                                                          print("delete Success");
-                                                                        } else {
-                                                                          return "delete fall";
-                                                                        }
-                                                                      });
-                                                                    })),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Container(
-                                                            child:
-                                                                GestureDetector(
-                                                                    child: Text(
-                                                                        'Cancel'),
-                                                                    onTap: () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    })),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              });
-                                        }),
-                                  ],
-                                )
-                              ],
+                              ),
                             )
                           ],
                         ),

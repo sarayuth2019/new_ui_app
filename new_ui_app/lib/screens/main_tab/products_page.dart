@@ -300,8 +300,8 @@ class _ProductsPage extends State {
     print("Connecting to API ");
 
     http.post(urlSaveItemToCart, body: params).then((res) {
-      print(res.body);
       var jsonRes = jsonDecode(utf8.decode(res.bodyBytes)) as Map;
+      print(jsonRes);
       var resStatus = jsonRes['status'];
       if (resStatus == 1) {
         snackBarKey.currentState.showSnackBar(snackBarOnAddItemSuccess);
