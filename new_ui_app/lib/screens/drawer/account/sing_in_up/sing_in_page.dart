@@ -92,7 +92,10 @@ class _SingIn extends State {
                 ),
               ),
             ),
-            Text("Don't have account ?",style: TextStyle(color: Colors.white),),
+            Text(
+              "Don't have account ?",
+              style: TextStyle(color: Colors.white),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
@@ -126,9 +129,10 @@ class _SingIn extends State {
         if (_resStatus == 1) {
           accountID = _accountData['id'];
           print("Account ID : ${accountID}");
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomePage(accountID)));
-
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage(accountID)),
+              (route) => false);
         } else if (_resStatus == 0) {
           snackBarKey.currentState.showSnackBar(snackBarSingInFail);
         }

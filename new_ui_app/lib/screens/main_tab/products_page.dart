@@ -85,22 +85,6 @@ class _ProductsPage extends State {
       appBar: AppBar(
         backgroundColor: Colors.orange[600],
         title: Text("Products ID : ${id}"),
-        actions: [
-          IconButton(
-              icon: Icon(
-                Icons.shopping_cart,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CartPage(accountID)));
-              }),
-          SizedBox(
-            width: 10,
-          )
-        ],
       ),
       body: ListView(
         children: [

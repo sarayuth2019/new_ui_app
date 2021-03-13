@@ -74,53 +74,88 @@ class _MyShop extends State {
                             ),
                             Expanded(
                               child: ListTile(
-                                trailing: IconButton(
-                                  onPressed: () {
-                                    return showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text('Select Choice'),
-                                            content: SingleChildScrollView(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                      child: GestureDetector(
-                                                          child:
-                                                              Text('Delete'),onTap: (){
-                                                            http.get("${urlDeleteProducts}${snapshot.data[index].id}").then((res){
-                                                              Map jsonData = jsonDecode(res.body)as Map;
-                                                              var statusData = jsonData['status'];
-                                                              if(statusData == 0){
-                                                                setState(() {
-                                                                });
-                                                                Navigator.of(context).pop();
-                                                                snackBarKey.currentState.showSnackBar(snackBarDeleteSuccess);
-                                                              }else{
-                                                                snackBarKey.currentState.showSnackBar(snackBarDeleteFall);
+                                trailing: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: Colors.amber,size: 17,
+                                          ),
+                                          onPressed: (){print("Edit Products");}),
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.remove_circle_outline,size: 17,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          return showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text('Select Choice'),
+                                                  content: SingleChildScrollView(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                            child:
+                                                                GestureDetector(
+                                                          child: Text('Delete'),
+                                                          onTap: () {
+                                                            http
+                                                                .get(
+                                                                    "${urlDeleteProducts}${snapshot.data[index].id}")
+                                                                .then((res) {
+                                                              Map jsonData =
+                                                                  jsonDecode(res
+                                                                          .body)
+                                                                      as Map;
+                                                              var statusData =
+                                                                  jsonData[
+                                                                      'status'];
+                                                              if (statusData ==
+                                                                  0) {
+                                                                setState(() {});
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                                snackBarKey
+                                                                    .currentState
+                                                                    .showSnackBar(
+                                                                        snackBarDeleteSuccess);
+                                                              } else {
+                                                                snackBarKey
+                                                                    .currentState
+                                                                    .showSnackBar(
+                                                                        snackBarDeleteFall);
                                                               }
                                                             });
-                                                      },)),
-                                                  SizedBox(
-                                                    height: 10,
+                                                          },
+                                                        )),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Container(
+                                                          child: GestureDetector(
+                                                            child: Text('Cancel'),
+                                                            onTap: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
-                                                  Container(
-                                                    child: GestureDetector(
-                                                        child: Text('Cancel'),onTap:(){
-                                                          Navigator.of(context).pop();
-                                                    },),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        });
-                                  },
-                                  icon: Icon(
-                                    Icons.remove_circle_outline,
-                                    color: Colors.red,
+                                                );
+                                              });
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 title: Column(

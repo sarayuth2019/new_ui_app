@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_ui_app/screens/appBar/cart/cart_page.dart';
@@ -9,6 +10,8 @@ import 'package:new_ui_app/screens/drawer/location/location_page.dart';
 import 'package:new_ui_app/screens/drawer/productsGroup/products_group_page.dart';
 import 'package:new_ui_app/screens/main_tab/all_deals.dart';
 import 'package:new_ui_app/screens/main_tab/all_products.dart';
+import 'package:new_ui_app/screens/main_tab/cart_count.dart';
+
 
 void main() => runApp(
     MaterialApp(debugShowCheckedModeBanner: false, home: HomePage(null)));
@@ -30,8 +33,6 @@ class _HomePage extends State {
 
   final accountID;
 
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,44 +43,55 @@ class _HomePage extends State {
             title: Text("RMUTI SHOP"),
             actions: [
               Container(
-                child: IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SearchPage(accountID)));
-                    }),
-              ),
-              Container(
-                child: accountID == null
-                    ? IconButton(
-                        icon: Icon(Icons.shopping_cart),
+                child: Stack(
+                  children: [
+                    IconButton(
+                        icon: Icon(Icons.search),
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SingIn()));
-                        })
-                    : IconButton(
-                        icon: Icon(Icons.shopping_cart),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      CartPage(accountID)));
+                                  builder: (context) => SearchPage(accountID)));
                         }),
+                  ],
+                ),
               ),
               Container(
-                child: IconButton(
-                    icon: Icon(Icons.notifications_on),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PromotionPage()));
-                    }),
+                child: Stack(
+                  children: [
+                    IconButton(
+                        icon: Icon(Icons.shopping_cart),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CartPage(accountID)));
+                        }),
+                    Positioned(
+                        top: 0,
+                        right: 0,
+                        child: accountID == null
+                            ? Container(
+                                height: 17,
+                                width: 17,
+                              )
+                            : Center(child: CartCount(accountID)))
+                  ],
+                ),
+              ),
+              Container(
+                child: Stack(
+                  children: [
+                    IconButton(
+                        icon: Icon(Icons.notifications_on),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PromotionPage()));
+                        }),
+                  ],
+                ),
               ),
             ],
             bottom: TabBar(
@@ -322,4 +334,5 @@ class _HomePage extends State {
       length: 2,
     );
   }
+
 }

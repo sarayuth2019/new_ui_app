@@ -188,7 +188,6 @@ class _AllProductsPage extends State {
     setState(() {
     });
     await Future.delayed(Duration(seconds: 3));
-    return null;
   }
 
   Future<List<_Products>> _listProducts() async {
