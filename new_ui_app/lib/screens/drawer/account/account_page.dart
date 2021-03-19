@@ -1,7 +1,6 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:new_ui_app/screens/drawer/account/my_order_tab.dart';
 import 'package:new_ui_app/screens/drawer/account/my_shop_tab.dart';
 import 'package:new_ui_app/screens/drawer/account/sell_products_tab.dart';
 
@@ -36,6 +35,9 @@ class _AccountPage extends State {
             indicatorColor: Colors.white,
             tabs: [
               Tab(
+                child: Text("ออร์เดอร์ของฉัน"),
+              ),
+              Tab(
                 child: Text("ร้านของฉัน"),
               ),
               Tab(
@@ -45,11 +47,11 @@ class _AccountPage extends State {
           ),
         ),
         body: TabBarView(
-          children: [MyShop(accountID), SellProducts(accountID)],
+          children: [MyOrderTab(accountID),MyShop(accountID), SellProducts(accountID)],
         ),
       ),
       initialIndex: 0,
-      length: 2,
+      length: 3,
     );
   }
 }

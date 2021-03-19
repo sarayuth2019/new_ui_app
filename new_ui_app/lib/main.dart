@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_ui_app/screens/appBar/cart/cart_page.dart';
@@ -11,7 +10,6 @@ import 'package:new_ui_app/screens/drawer/productsGroup/products_group_page.dart
 import 'package:new_ui_app/screens/main_tab/all_deals.dart';
 import 'package:new_ui_app/screens/main_tab/all_products.dart';
 import 'package:new_ui_app/screens/main_tab/cart_count.dart';
-
 
 void main() => runApp(
     MaterialApp(debugShowCheckedModeBanner: false, home: HomePage(null)));
@@ -334,5 +332,4 @@ class _HomePage extends State {
       length: 2,
     );
   }
-
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_ui_app/main.dart';
-import 'package:new_ui_app/screens/main_tab/cart_count.dart';
+
 
 class MyCartTab extends StatefulWidget {
   MyCartTab(this.accountID);
@@ -38,8 +38,6 @@ class _MyCartTab extends State {
       SnackBar(content: Text("สั่งซื้อสำเร็จ !"));
   final snackBarSaveToOrderFall =
       SnackBar(content: Text("สั่งซื้อผิดพลาด กรุณาลองใหม่อีกครั้ง !"));
-  final snackBarNoProductsInCart =
-      SnackBar(content: Text("กรุณาเพิ่มสินค้าลงในรถเข็นก่อน"));
   List _listProductsCartByCustomer = [];
 
   @override
@@ -208,6 +206,7 @@ class _MyCartTab extends State {
   Future<List<_Products>> listCartByCustomer() async {
     Map params = Map();
     List<_Products> listProductsByCustomer = [];
+
     params['customer'] = accountID.toString();
     print("connect to Api Cart Customer Products...");
     await http.post(urlCartByCustomer, body: params).then((res) {
@@ -226,6 +225,7 @@ class _MyCartTab extends State {
             p['price'],
             p['customer'],
             p['user'],
+            p['item'],
             p['date'],
             p['image']);
         listProductsByCustomer.add(_products);
@@ -247,6 +247,7 @@ class _MyCartTab extends State {
       params['price'] = element.price.toString();
       params['customer'] = element.customer_id.toString();
       params['user'] = element.seller_id.toString();
+      params['item'] = element.item_id.toString();
       params['image'] = element.image.toString();
       http.post(urlSaveToOrder, body: params).then((res) {
         print(res.body);
@@ -282,6 +283,7 @@ class _Products {
   final int price;
   final int customer_id;
   final int seller_id;
+  final int item_id;
   final String data;
   final String image;
 
@@ -293,6 +295,7 @@ class _Products {
     this.price,
     this.customer_id,
     this.seller_id,
+    this.item_id,
     this.data,
     this.image,
   );

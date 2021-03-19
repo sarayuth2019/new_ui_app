@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_ui_app/screens/appBar/cart/my_cart_tab.dart';
-import 'package:new_ui_app/screens/appBar/cart/my_order_tab.dart';
+import 'package:new_ui_app/screens/appBar/cart/my_ordersell_tab.dart';
 
 class CartPage extends StatefulWidget {
   CartPage(this.accountID);

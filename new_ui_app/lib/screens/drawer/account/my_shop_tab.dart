@@ -63,14 +63,19 @@ class _MyShop extends State {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.memory(
-                                    base64Decode(snapshot.data[index].image),
-                                    height: 100,
-                                    width: 100,
-                                    fit: BoxFit.fill,
-                                  )),
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.memory(
+                                        base64Decode(snapshot.data[index].image),
+                                        height: 100,
+                                        width: 100,
+                                        fit: BoxFit.fill,
+                                      )),
+                                  Text("PID : ${snapshot.data[index].id}"),
+                                ],
+                              ),
                             ),
                             Expanded(
                               child: ListTile(

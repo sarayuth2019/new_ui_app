@@ -101,6 +101,7 @@ class _MyOrderTab extends State {
             p['price'],
             p['customer'],
             p['user'],
+            p['item'],
             p['date'],
             p['image']);
         listOrderByCustomer.add(_products);
@@ -119,6 +120,7 @@ class _Products {
   final int price;
   final int customer_id;
   final int seller_id;
+  final int item_id;
   final String data;
   final String image;
 
@@ -130,6 +132,7 @@ class _Products {
     this.price,
     this.customer_id,
     this.seller_id,
+    this.item_id,
     this.data,
     this.image,
   );

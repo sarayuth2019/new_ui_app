@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'file:///C:/Users/TopSaga/Desktop/new_ui_app/lib/screens/drawer/account/sing_in_up/sing_in_page.dart';
-import 'package:new_ui_app/screens/appBar/cart/cart_page.dart';
+
 
 class ProductsPage extends StatefulWidget {
   ProductsPage(
@@ -274,8 +274,10 @@ class _ProductsPage extends State {
     params["price"] = price.toString();
     params["customer"] = accountID.toString();
     params["user"] = seller_id.toString();
+    params["item"] = id.toString();
     params["image"] = image.toString();
 
+    print("id product : ${id.toString()}");
     print("name product : ${name.toString()}");
     print("number : ${number.toString()}");
     print("price : ${price.toString()}");

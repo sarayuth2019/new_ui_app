@@ -29,7 +29,6 @@ class _CartCount extends State {
     return StreamBuilder(
       stream: streamCartCount(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        print("Stream snapshot :${snapshot.data}");
         if (snapshot.data == null) {
           return Container(
             height: 17,
@@ -55,21 +54,17 @@ class _CartCount extends State {
   }
 
   Stream <void> streamCartCount()async* {
-    Future.delayed(Duration(seconds: 5));
     Map params = Map();
     params['customer'] = accountID.toString();
-    print("Stream connect to Api Cart Customer Products...");
     var res = await http.post(urlCartByCustomer, body: params);
-    print("Stream connect to Api Cart Customer Products Success");
     Map jsonData = jsonDecode(utf8.decode(res.bodyBytes)) as Map;
     var productsData = jsonData['data'];
     if (productsData != null) {
       setState(() {
         _countCart = productsData.length;
-        print("Stream Cart Count : ${_countCart.toString()}");
       });
     } else {
-      print("Stream Cart Count null : ${productsData.length}");
+      print("Count Cart fall !");
     }
     yield _countCart;
   }
