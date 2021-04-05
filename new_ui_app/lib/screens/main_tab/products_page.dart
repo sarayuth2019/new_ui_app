@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -84,7 +83,7 @@ class _ProductsPage extends State {
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         backgroundColor: Colors.orange[600],
-        title: Text("Products ID : ${id}"),
+        title: Text("Products ID : ${id.toString()}"),
       ),
       body: ListView(
         children: [

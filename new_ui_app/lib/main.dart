@@ -10,26 +10,32 @@ import 'package:new_ui_app/screens/drawer/productsGroup/products_group_page.dart
 import 'package:new_ui_app/screens/main_tab/all_deals.dart';
 import 'package:new_ui_app/screens/main_tab/all_products.dart';
 import 'package:new_ui_app/screens/main_tab/cart_count.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(
-    MaterialApp(debugShowCheckedModeBanner: false, home: HomePage(null)));
+void main() =>
+    runApp(MaterialApp(debugShowCheckedModeBanner: false, home: HomePage()));
 
 class HomePage extends StatefulWidget {
-  HomePage(this.accountID);
-
-  final accountID;
+  HomePage();
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _HomePage(accountID);
+    return _HomePage();
   }
 }
 
 class _HomePage extends State {
-  _HomePage(this.accountID);
+  _HomePage();
 
-  final accountID;
+  int accountID;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    autoLogin();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +66,16 @@ class _HomePage extends State {
                     IconButton(
                         icon: Icon(Icons.shopping_cart),
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CartPage(accountID)));
+                          accountID == null
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SingIn()))
+                              : Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CartPage(accountID)));
                         }),
                     Positioned(
                         top: 0,
@@ -298,13 +310,7 @@ class _HomePage extends State {
                     padding: const EdgeInsets.only(top: 8, bottom: 8),
                     child: Container(
                       child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage(null)),
-                              (route) => false);
-                        },
+                        onTap:logout,
                         child: Card(
                           color: Colors.orange[600],
                           child: ListTile(
@@ -326,10 +332,31 @@ class _HomePage extends State {
             ),
           ),
           body: TabBarView(
-            children: [AllProductsPage(accountID), AllDealsPage(accountID)],
+            children: [AllProductsPage(), AllDealsPage(accountID)],
           )),
       initialIndex: 0,
       length: 2,
     );
+  }
+
+  Future autoLogin() async {
+    final SharedPreferences _accountID = await SharedPreferences.getInstance();
+    final accountIDInDevice = _accountID.getInt('accountID');
+    if (accountIDInDevice != null) {
+      setState(() {
+        accountID = accountIDInDevice;
+        print("account login future: accountID ${accountID.toString()}");
+      });
+    }
+  }
+
+  Future logout() async {
+    final SharedPreferences _accountID = await SharedPreferences.getInstance();
+    _accountID.setInt('accountID', null);
+    print("account logout !");
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+          (route) => false);
   }
 }

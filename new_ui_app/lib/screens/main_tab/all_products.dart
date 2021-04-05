@@ -4,24 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_ui_app/screens/main_tab/products_page.dart';
-
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AllProductsPage extends StatefulWidget {
-  AllProductsPage(this.accountID);
-  final int accountID;
+  AllProductsPage();
+
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _AllProductsPage(accountID);
+    return _AllProductsPage();
   }
 }
 
 class _AllProductsPage extends State {
-  _AllProductsPage(this.accountID);
-  final int accountID;
+  _AllProductsPage();
+
+  int accountID;
   final urlListAllProducts = "https://testheroku11111.herokuapp.com/Item/list";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAccountID();
+  }
 
 
 
@@ -69,7 +76,8 @@ class _AllProductsPage extends State {
                                 Container(
                                   child: snapshot.data[index].image == null
                                       ? ClipRRect(
-                                          borderRadius: BorderRadius.circular(30),
+                                          borderRadius:
+                                              BorderRadius.circular(30),
                                           child: Container(
                                               color: Colors.blueGrey,
                                               height: 200,
@@ -81,7 +89,8 @@ class _AllProductsPage extends State {
                                               )),
                                         )
                                       : ClipRRect(
-                                          borderRadius: BorderRadius.circular(30),
+                                          borderRadius:
+                                              BorderRadius.circular(30),
                                           child: Container(
                                             height: 200,
                                             width: 200,
@@ -95,7 +104,8 @@ class _AllProductsPage extends State {
                                 ),
                                 Flexible(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -119,7 +129,8 @@ class _AllProductsPage extends State {
                                         ignoreGestures: true,
                                         allowHalfRating: true,
                                         itemCount: 5,
-                                        initialRating: snapshot.data[index].rating
+                                        initialRating: snapshot
+                                            .data[index].rating
                                             .toDouble(),
                                         itemBuilder: (context, r) {
                                           return Icon(
@@ -184,9 +195,10 @@ class _AllProductsPage extends State {
               }
             }));
   }
+
   Future<void> _onRefresh() async {
-    setState(() {
-    });
+    getAccountID();
+    setState(() {});
     await Future.delayed(Duration(seconds: 3));
   }
 
@@ -194,7 +206,8 @@ class _AllProductsPage extends State {
     print("connect to Api All Products...");
     var _getDataProDucts = await http.get(urlListAllProducts);
     print("connect to Api All Products Success");
-    var _jsonDataAllProducts = jsonDecode(utf8.decode(_getDataProDucts.bodyBytes));
+    var _jsonDataAllProducts =
+        jsonDecode(utf8.decode(_getDataProDucts.bodyBytes));
     var _dataAllProducts = _jsonDataAllProducts['data'];
     List<_Products> listAllProducts = [];
     for (var p in _dataAllProducts) {
@@ -214,7 +227,22 @@ class _AllProductsPage extends State {
     print("All Products length : ${listAllProducts.length}");
     return listAllProducts;
   }
+
+  Future getAccountID() async {
+    final SharedPreferences _accountID = await SharedPreferences.getInstance();
+    final accountIDInDevice = _accountID.getInt('accountID');
+    if (accountIDInDevice != null) {
+      setState(() {
+        accountID = accountIDInDevice;
+        print("Get account login future: accountID ${accountID.toString()}");
+      });
+    }
+    else{print("no have accountID login");}
+  }
+
 }
+
+
 class _Products {
   final int id;
   final String name;
@@ -228,15 +256,15 @@ class _Products {
   final String image;
 
   _Products(
-      this.id,
-      this.name,
-      this.description,
-      this.rating,
-      this.countRating,
-      this.price,
-      this.location,
-      this.user_id,
-      this.data,
-      this.image,
-      );
+    this.id,
+    this.name,
+    this.description,
+    this.rating,
+    this.countRating,
+    this.price,
+    this.location,
+    this.user_id,
+    this.data,
+    this.image,
+  );
 }

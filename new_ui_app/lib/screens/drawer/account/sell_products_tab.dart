@@ -161,7 +161,7 @@ class _SellProducts extends State {
               TextFormField(
                 decoration: InputDecoration(hintText: "ชื่อสินค้า"),
                 validator: _checkText,
-                onSaved: (text) {
+                onSaved: (String text) {
                   nameMenu = text;
                 },
               ),
@@ -169,7 +169,7 @@ class _SellProducts extends State {
                 decoration: InputDecoration(hintText: "ราคาสินค้า : บาท"),
                 keyboardType: TextInputType.number,
                 validator: _checkPrice,
-                onSaved: (num) {
+                onSaved: (String num) {
                   price = int.parse(num);
                 },
               ),
@@ -177,7 +177,7 @@ class _SellProducts extends State {
                 maxLines: null,
                 decoration: InputDecoration(hintText: "คำอธิบายสินค้า"),
                 validator: _checkDescription,
-                onSaved: (text) {
+                onSaved: (String text) {
                   description = text;
                 },
               ),

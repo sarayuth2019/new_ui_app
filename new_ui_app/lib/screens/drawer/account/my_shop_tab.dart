@@ -98,7 +98,7 @@ class _MyShop extends State {
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
-                                                  title: Text('Select Choice'),
+                                                  title: Text('ยืนยันการลบสินค้า'),
                                                   content: SingleChildScrollView(
                                                     child: Column(
                                                       crossAxisAlignment:
@@ -108,7 +108,7 @@ class _MyShop extends State {
                                                         Container(
                                                             child:
                                                                 GestureDetector(
-                                                          child: Text('Delete'),
+                                                          child: Text('ยืนยัน'),
                                                           onTap: () {
                                                             http
                                                                 .get(
@@ -145,7 +145,7 @@ class _MyShop extends State {
                                                         ),
                                                         Container(
                                                           child: GestureDetector(
-                                                            child: Text('Cancel'),
+                                                            child: Text('ยกเลิก'),
                                                             onTap: () {
                                                               Navigator.of(
                                                                       context)

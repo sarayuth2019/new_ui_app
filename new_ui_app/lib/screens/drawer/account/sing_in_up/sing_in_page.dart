@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:new_ui_app/main.dart';
 import 'file:///C:/Users/TopSaga/Desktop/new_ui_app/lib/screens/drawer/account/sing_in_up/sing_up_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SingIn extends StatefulWidget {
   @override
@@ -129,9 +130,10 @@ class _SingIn extends State {
         if (_resStatus == 1) {
           accountID = _accountData['id'];
           print("Account ID : ${accountID}");
+          saveUserIDToDevice();
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => HomePage(accountID)),
+              MaterialPageRoute(builder: (context) => HomePage()),
               (route) => false);
         } else if (_resStatus == 0) {
           snackBarKey.currentState.showSnackBar(snackBarSingInFail);
@@ -139,4 +141,11 @@ class _SingIn extends State {
       });
     });
   }
+
+  Future saveUserIDToDevice ()async{
+    final SharedPreferences _accountID = await SharedPreferences.getInstance();
+    _accountID.setInt('accountID', accountID);
+    print("save accountID to device : aid ${_accountID.toString()}");
+  }
+
 }
