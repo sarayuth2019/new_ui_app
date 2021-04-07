@@ -32,6 +32,7 @@ class _SellProducts extends State {
   final snackBarNoLocation = SnackBar(content: Text("กรุณาเลือกสถานที่"));
   final snackBarNoGroupItem = SnackBar(content: Text("กรุณาเลือกประเภทสินค้า"));
   bool checkText = false;
+  String textPromotion = "เพิ่มโปรโมชันสินค้า";
 
   String nameMenu;
   int price;
@@ -41,6 +42,12 @@ class _SellProducts extends State {
   String description;
   File imageFile;
   String imageData;
+  int countPromotion = 0;
+  int discountPromotion = 0;
+  int statusPromotion = 0;
+
+  TextEditingController _countPromotion = TextEditingController();
+  TextEditingController _discountPromotion = TextEditingController();
 
   List listDropdownLocation = [
     "ตึก 5",
@@ -54,6 +61,7 @@ class _SellProducts extends State {
     "เครื่องแต่งกาย"
   ];
 
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -65,130 +73,141 @@ class _SellProducts extends State {
           key: _formKey,
           // ignore: deprecated_member_use
           autovalidate: checkText,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "กรุณากรอกข้อมูลสินค้าให้ครบ",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Padding(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      _showAlertSelectImage(context);
-                    },
-                    child: Container(
-                      child: imageData == null
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(30),
-                              child: Container(
-                                height: 200,
-                                width: 200,
-                                color: Colors.grey,
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                ),
-                              ))
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(30),
-                              child: Container(
-                                child: Image.memory(
-                                  base64Decode(imageData),
-                                  fit: BoxFit.fill,
+                  child: Text(
+                    "กรุณากรอกข้อมูลสินค้าให้ครบ",
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        _showAlertSelectImage(context);
+                      },
+                      child: Container(
+                        child: imageData == null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(30),
+                                child: Container(
                                   height: 200,
                                   width: 200,
+                                  color: Colors.grey,
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ))
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(30),
+                                child: Container(
+                                  child: Image.memory(
+                                    base64Decode(imageData),
+                                    fit: BoxFit.fill,
+                                    height: 200,
+                                    width: 200,
+                                  ),
                                 ),
                               ),
-                            ),
+                      ),
+                    )),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: DropdownButton(
+                    hint: Text("เลือกสถานที่"),
+                    isExpanded: true,
+                    underline: Container(
+                      decoration:
+                          BoxDecoration(border: Border.all(color: Colors.grey)),
                     ),
-                  )),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: DropdownButton(
-                  hint: Text("เลือกสถานที่"),
-                  isExpanded: true,
-                  underline: Container(
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.grey)),
+                    value: location,
+                    onChanged: (newValue) {
+                      setState(() {
+                        location = newValue;
+                        print(location);
+                      });
+                    },
+                    items: listDropdownLocation.map((_value) {
+                      return DropdownMenuItem(value: _value, child: Text(_value));
+                    }).toList(),
                   ),
-                  value: location,
-                  onChanged: (newValue) {
-                    setState(() {
-                      location = newValue;
-                      print(location);
-                    });
-                  },
-                  items: listDropdownLocation.map((_value) {
-                    return DropdownMenuItem(value: _value, child: Text(_value));
-                  }).toList(),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: DropdownButton(
-                  hint: Text("เลือกประเภทของสินค้า"),
-                  isExpanded: true,
-                  underline: Container(
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.grey)),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: DropdownButton(
+                    hint: Text("เลือกประเภทของสินค้า"),
+                    isExpanded: true,
+                    underline: Container(
+                      decoration:
+                          BoxDecoration(border: Border.all(color: Colors.grey)),
+                    ),
+                    value: _groupItem,
+                    onChanged: (newValue) {
+                      setState(() {
+                        _groupItem = newValue;
+                        print(_groupItem);
+                        if (_groupItem == "อาหาร&เครื่องดื่ม") {
+                          groupItem = 1;
+                        } else if (_groupItem == "อุปกรณ์การเรียน") {
+                          groupItem = 2;
+                        } else if (_groupItem == "เครื่องแต่งกาย") {
+                          groupItem = 3;
+                        } else {
+                          return null;
+                        }
+                        print("GroupItem : ${groupItem.toString()}");
+                      });
+                    },
+                    items: listDropdownGroupItem.map((_value) {
+                      return DropdownMenuItem(value: _value, child: Text(_value));
+                    }).toList(),
                   ),
-                  value: _groupItem,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _groupItem = newValue;
-                      print(_groupItem);
-                      if (_groupItem == "อาหาร&เครื่องดื่ม") {
-                        groupItem = 1;
-                      } else if (_groupItem == "อุปกรณ์การเรียน") {
-                        groupItem = 2;
-                      } else if (_groupItem == "เครื่องแต่งกาย") {
-                        groupItem = 3;
-                      } else {
-                        return null;
-                      }
-                      print("GroupItem : ${groupItem.toString()}");
-                    });
-                  },
-                  items: listDropdownGroupItem.map((_value) {
-                    return DropdownMenuItem(value: _value, child: Text(_value));
-                  }).toList(),
                 ),
-              ),
-              TextFormField(
-                decoration: InputDecoration(hintText: "ชื่อสินค้า"),
-                validator: _checkText,
-                onSaved: (String text) {
-                  nameMenu = text;
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(hintText: "ราคาสินค้า : บาท"),
-                keyboardType: TextInputType.number,
-                validator: _checkPrice,
-                onSaved: (String num) {
-                  price = int.parse(num);
-                },
-              ),
-              TextFormField(
-                maxLines: null,
-                decoration: InputDecoration(hintText: "คำอธิบายสินค้า"),
-                validator: _checkDescription,
-                onSaved: (String text) {
-                  description = text;
-                },
-              ),
-              RaisedButton(
-                  color: Colors.orange[600],
-                  child: Text(
-                    "Save",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: onSaveData)
-            ],
+                TextFormField(
+                  decoration: InputDecoration(hintText: "ชื่อสินค้า"),
+                  validator: _checkText,
+                  onSaved: (String text) {
+                    nameMenu = text;
+                  },
+                ),
+                TextFormField(
+                  decoration: InputDecoration(hintText: "ราคาสินค้า : บาท"),
+                  keyboardType: TextInputType.number,
+                  validator: _checkPrice,
+                  onSaved: (String num) {
+                    price = int.parse(num);
+                  },
+                ),
+                TextFormField(
+                  maxLines: null,
+                  decoration: InputDecoration(hintText: "คำอธิบายสินค้า"),
+                  validator: _checkDescription,
+                  onSaved: (String text) {
+                    description = text;
+                  },
+                ),
+                // ignore: deprecated_member_use
+                RaisedButton(
+                    child: Text(textPromotion),
+                    onPressed: () {
+                      addPromotion(context);
+                    }),
+                // ignore: deprecated_member_use
+                RaisedButton(
+                    color: Colors.orange[600],
+                    child: Text(
+                      "ลงขายสินค้า",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: onSaveData)
+              ],
+            ),
           ),
         ),
       ),
@@ -280,6 +299,70 @@ class _SellProducts extends State {
     }
   }
 
+  void addPromotion(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("กรุณาใส่โปรโมชันสินค้า"),
+            content: SingleChildScrollView(
+                child: Column(
+              children: [
+                TextField(
+                  controller: _countPromotion,
+                  decoration: InputDecoration(
+                      hintText: "จำนวนต่ำสุดของการได้รับโปรโมชัน"),
+                ),
+                TextField(
+                  controller: _discountPromotion,
+                  decoration: InputDecoration(hintText: "ส่วนลดของสินค้า %"),
+                ),
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.orange[600])),
+                    child: Text("บันทึกโปรโมชัน"),
+                    onPressed: savePromotion),
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.grey)),
+                  child: Text("ยกเลิกโปรโมชัน"),
+                  onPressed: cancelPromotion,
+                )
+              ],
+            )),
+          );
+        });
+  }
+
+  void savePromotion() {
+    countPromotion = int.parse(_countPromotion.text);
+    discountPromotion = int.parse(_discountPromotion.text);
+    statusPromotion = 1;
+    setState(() {
+      textPromotion =
+          "ซื้อ ${countPromotion.toString()} ได้ส่วนลด ${discountPromotion.toString()}%";
+      print(
+          "เพิ่มโปรโมชัน statusPro ${statusPromotion.toString()} ซื้อ ${countPromotion.toString()} ลด ${discountPromotion.toString()} %");
+      Navigator.of(context).pop();
+    });
+  }
+
+  void cancelPromotion() {
+
+    countPromotion = 0;
+    discountPromotion = 0;
+    statusPromotion = 0;
+    setState(() {
+      _countPromotion.clear();
+      _discountPromotion.clear();
+      textPromotion = "เพิ่มโปรโมชันสินค้า";
+      print(
+          "ยกเลิกโปรโมชัน statusPro ${statusPromotion.toString()} ซื้อ ${countPromotion.toString()} ลด ${discountPromotion.toString()} %");
+      Navigator.of(context).pop();
+    });
+  }
+
   void onSaveData() {
     if (imageData == null) {
       _snackBarKey.currentState.showSnackBar(snackBarNoImage);
@@ -295,6 +378,7 @@ class _SellProducts extends State {
       print("name product : ${nameMenu.toString()}");
       print("price : ${price.toString()}");
       print("group item : ${groupItem.toString()}");
+      print("โปรโมชัน statusPro ${statusPromotion.toString()} ซื้อ ${countPromotion.toString()} ลด ${discountPromotion.toString()} %");
 
       saveToDB();
     } else {
@@ -313,6 +397,10 @@ class _SellProducts extends State {
     params['location'] = location.toString();
     params['group'] = groupItem.toString();
     params['image'] = imageData.toString();
+    params['count_promotion'] = countPromotion.toString();
+    params['discount'] = discountPromotion.toString();
+    params['status_promotion'] = statusPromotion.toString();
+
     http.post(urlSellProducts, body: params).then((res) {
       Map _resData = jsonDecode(utf8.decode(res.bodyBytes)) as Map;
       print(_resData);

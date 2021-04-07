@@ -1,16 +1,17 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:new_ui_app/screens/appBar/cart/cart_page.dart';
-import 'package:new_ui_app/screens/appBar/promotion/promotion_page.dart';
-import 'package:new_ui_app/screens/appBar/search/search_page.dart';
-import 'package:new_ui_app/screens/drawer/account/account_page.dart';
-import 'package:new_ui_app/screens/drawer/account/sing_in_up/sing_in_page.dart';
-import 'package:new_ui_app/screens/drawer/location/location_page.dart';
-import 'package:new_ui_app/screens/drawer/productsGroup/products_group_page.dart';
-import 'package:new_ui_app/screens/main_tab/all_deals.dart';
-import 'package:new_ui_app/screens/main_tab/all_products.dart';
-import 'package:new_ui_app/screens/main_tab/cart_count.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'screens/appBar/cart/cart_page.dart';
+import 'screens/appBar/promotion/promotion_page.dart';
+import 'screens/appBar/search/search_page.dart';
+import 'screens/drawer/account/account_page.dart';
+import 'screens/drawer/account/sing_in_up/sing_in_page.dart';
+import 'screens/drawer/location/location_page.dart';
+import 'screens/drawer/productsGroup/products_group_page.dart';
+import 'screens/main_tab/all_deals.dart';
+import 'screens/main_tab/all_products.dart';
+import 'screens/main_tab/cart_count.dart';
 
 void main() =>
     runApp(MaterialApp(debugShowCheckedModeBanner: false, home: HomePage()));

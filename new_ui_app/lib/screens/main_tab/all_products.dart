@@ -22,6 +22,8 @@ class _AllProductsPage extends State {
 
   int accountID;
   final urlListAllProducts = "https://testheroku11111.herokuapp.com/Item/list";
+  int ratingCount = 10;
+  double rating = 3.9;
 
   @override
   void initState() {
@@ -58,8 +60,8 @@ class _AllProductsPage extends State {
                                         snapshot.data[index].id,
                                         snapshot.data[index].name,
                                         snapshot.data[index].description,
-                                        snapshot.data[index].rating,
-                                        snapshot.data[index].countRating,
+                                        rating,
+                                        ratingCount,
                                         snapshot.data[index].price,
                                         snapshot.data[index].location,
                                         snapshot.data[index].user_id,
@@ -129,23 +131,22 @@ class _AllProductsPage extends State {
                                         ignoreGestures: true,
                                         allowHalfRating: true,
                                         itemCount: 5,
-                                        initialRating: snapshot
-                                            .data[index].rating
-                                            .toDouble(),
+                                        initialRating:
+                                            rating,
                                         itemBuilder: (context, r) {
                                           return Icon(
                                             Icons.star_rounded,
                                             color: Colors.amber,
                                           );
                                         },
-                                        itemSize: 30,
+                                        itemSize: 20,
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Row(
                                           children: [
                                             Text(
-                                              "(${snapshot.data[index].rating})",
+                                              "(${rating.toString()})",
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold,
@@ -159,7 +160,7 @@ class _AllProductsPage extends State {
                                               color: Colors.blue,
                                             ),
                                             Text(
-                                              "(${snapshot.data[index].countRating})",
+                                              "(${ratingCount.toString()})",
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold,
@@ -215,8 +216,6 @@ class _AllProductsPage extends State {
           p['id'],
           p['name'],
           p['description'],
-          p['rating'],
-          p['count_rating'],
           p['price'],
           p['location'],
           p['user'],
@@ -247,8 +246,6 @@ class _Products {
   final int id;
   final String name;
   final String description;
-  final int rating;
-  final int countRating;
   final int price;
   final String location;
   final int user_id;
@@ -259,8 +256,6 @@ class _Products {
     this.id,
     this.name,
     this.description,
-    this.rating,
-    this.countRating,
     this.price,
     this.location,
     this.user_id,

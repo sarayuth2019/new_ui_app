@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
-import 'file:///C:/Users/TopSaga/Desktop/new_ui_app/lib/screens/drawer/account/sing_in_up/sing_in_page.dart';
+import '../drawer/account/sing_in_up/sing_in_page.dart';
+
 
 
 class ProductsPage extends StatefulWidget {
@@ -24,7 +25,7 @@ class ProductsPage extends StatefulWidget {
   final int id;
   final String name;
   final String description;
-  final int rating;
+  final double rating;
   final int countRating;
   final int price;
   final String location;
@@ -58,7 +59,7 @@ class _ProductsPage extends State {
   final int id;
   final String name;
   final String description;
-  final int rating;
+  final double rating;
   final int countRating;
   final int price;
   final String location;
@@ -152,7 +153,7 @@ class _ProductsPage extends State {
                             ignoreGestures: true,
                             allowHalfRating: true,
                             itemCount: 5,
-                            initialRating: rating.toDouble(),
+                            initialRating: rating,
                             itemBuilder: (context, r) {
                               return Icon(
                                 Icons.star_rounded,

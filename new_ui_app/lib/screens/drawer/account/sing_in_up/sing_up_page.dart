@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart'as http;
-import 'file:///C:/Users/TopSaga/Desktop/new_ui_app/lib/screens/drawer/account/sing_in_up/sing_in_page.dart';
+
+import 'sing_in_page.dart';
+
 
 
 class SingUp extends StatefulWidget {

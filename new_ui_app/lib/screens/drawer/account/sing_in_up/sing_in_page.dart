@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_ui_app/main.dart';
-import 'file:///C:/Users/TopSaga/Desktop/new_ui_app/lib/screens/drawer/account/sing_in_up/sing_up_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'sing_up_page.dart';
 
 class SingIn extends StatefulWidget {
   @override
